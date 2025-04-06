@@ -4,11 +4,11 @@ Recommendation system model trial on the data base.
 
 ## What is this repository for? ###
 
-* This repository contains code to run a recommender system trained on the data base from 
-(last update 07/12/2022). 
-* The model can be run from the command line using the instructions below. 
+* This repository contains the code for a recommendation system aimed at recommending venues (hotels, restaurants, shops...) to users. 
+* The model was trained on a (private) data base of around 1000 users (called "Members") and 300 venues (called "Partners"). The data set contained information about each partner (tags that characterize the partner - "hotel", "5-star", "swimming pool"), and interaction history between the members and the partners. 
+* The model is based on collaborative filtering and content, and makes use of the LightFM package. 
 * Two recommender models are available : 
-    - a hybrid model (based on content-based and collaborative filtering)
+    - a hybrid model (based on content and collaborative filtering)
     - a pure collaborative filtering model
 
 
@@ -18,22 +18,13 @@ Recommendation system model trial on the data base.
 ├── conf
 │   ├── core.py
 ├── data
-│   ├── user_item_dataset.pkl
-│   ├── sql_connections.py
-│   ├── process_data.py
-    ├── 22_06_27_export.sql
-│   └── 22_12_07_export.sql
 ├── recommendations
 ├── experiments
-│   ├── dec_22_dump_hybrid_exp.json
+│   ├── test_experiment.json
 ├── saved_models
-│   ├── LightFM_CF.pkl
-│   ├── LightFMHybrid.pkl
-│   ├── 2022_12_08_Hybrid.pkl
 ├── src
 │   ├── recsys.py
 │   ├── user_item_dataset.py
-|
 ├── recommender.py
 ├── train.py
 ├── config.yml
@@ -42,26 +33,6 @@ Recommendation system model trial on the data base.
 └── README.md
 
 ```
-
-## Code Set Up ##
-
-### Prerequisites ###
-
-* Python version : 3.7.13
-* Virtual environment
-* Libraries to install : requirements.txt
-
-### Installations ###
-
-* Download Python (version 3.7.13): https://www.python.org/downloads/ 
-
-* Install virtualenv using  pip (for better package management) :
-    - Install virtualenv : ```pip install virtualenv```
-    - Create a virtual environment with desired name : ```virtualenv {virtualenv_name}```
-    - Activate the virtual environment : ```source virtualenv {virtualenv_name}``` (OS/Linux) or ```{virtualenv_name}\Scripts\activate``` (Windows)
-
-* Navigate to the project directory : *RecSys/*
-* Install the libraries required to run the recommender system : ```pip install -r requirements.txt```
 
 ## Recommender System ##
 
@@ -95,16 +66,16 @@ The recommendation system is built as follows : it learns a vector representatio
 
 In our data set : 
 
-- a user (MyC member) is represented by a vector *X* of length *n_items* (number of MyC partners) with each coordinate being the number of times the user visited the partner. 
+- a user (member) is represented by a vector *X* of length *n_items* (number of partners) with each coordinate being the number of times the user visited the partner. 
 
-- an item (MyC partner) is represented by a vector *Y* of length *n_tags* with each coordinate a 1 if the item was tagged as such or 0 if not. 
+- an item (partner) is represented by a vector *Y* of length *n_tags* with each coordinate a 1 if the item was tagged as such or 0 if not. 
 
 We optimize the model to find new representations of *X* and *Y*, called *U* and *V* (of same smaller dimensionality *no_components*) such that the product *U.V* will be maximal if user *U* and item *V* are "compatible", and that we want to recommend the item *V* to user *U*.
 
-The embeddings *U* and *V* are based on both the interactions between users and items, and on the item features (the tags for the MyC partners). Thus, a user will be recommended partners similar to partners he has previously interacted with, but also partners that users with a similar interaction profile visited. 
+The embeddings *U* and *V* are based on both the interactions between users and items, and on the item features (the tags for the partners). Thus, a user will be recommended partners similar to partners he has previously interacted with, but also partners that users with a similar interaction profile visited. 
 
-Since our model takes into account item features (i.e. MyC partner tags), a new partner can be recommended by the system (even if no member has had an interaction with it). 
-However, our model does not take into account any user features (characteristics of the MyC members), so for a new member to be given a recommendation, the training data set must contain at least one interaction for the given member. 
+Since our model takes into account item features (i.e. partner tags), a new partner can be recommended by the system (even if no member has had an interaction with it). 
+However, our model does not take into account any user features (characteristics of the members), so for a new member to be given a recommendation, the training data set must contain at least one interaction for the given member. 
 
 More details about how the system works can be found in the documentation here : https://making.lyst.com/lightfm/docs/index.html 
 
@@ -121,6 +92,25 @@ Improvements could be made to the model in the following ways:
 - Adding more interactions data could be useful to improve the robustness of the model. 
 
 
+## Code Set Up ##
+
+### Prerequisites ###
+
+* Python version : 3.7.13
+* Virtual environment
+* Libraries to install : requirements.txt
+
+### Installations ###
+
+* Download Python (version 3.7.13): https://www.python.org/downloads/ 
+
+* Install virtualenv using  pip (for better package management) :
+    - Install virtualenv : ```pip install virtualenv```
+    - Create a virtual environment with desired name : ```virtualenv {virtualenv_name}```
+    - Activate the virtual environment : ```source virtualenv {virtualenv_name}``` (OS/Linux) or ```{virtualenv_name}\Scripts\activate``` (Windows)
+
+* Navigate to the project directory : *RecSys/*
+* Install the libraries required to run the recommender system : ```pip install -r requirements.txt```
 
 ## Running the recommendation system ##
 
@@ -275,7 +265,7 @@ OR (equivalent):
                         For minimal details, set verbose to 0. For maximal details, 
                         set verbose to any integer strictly greater than 1. Default verbosity is 1.
 
-### ***Example : Train *** ###
+### ***Example : Train*** ###
 
 To launch training, the following lines are equivalent: 
 
