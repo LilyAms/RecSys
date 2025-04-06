@@ -1,0 +1,6 @@
+*.pyc
+data/user_item_dataset.pkl
+.env
+saved_models/
+
+!.env.template

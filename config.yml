@@ -1,0 +1,93 @@
+package_name: recsys
+
+# File name to save training configuration and results
+# Will be saved to a json in the experiments/ directory
+experiment_name: test_experiment
+
+
+# Provide model type : 'hybrid' for a model based on content and collaborative filtering. 
+# 'cf' for a model-based solely on collaborative filtering. In that case, item features (tags) will 
+# not be taken into account by the model, and only user-item interactions will determine the prediction. 
+model_type: hybrid #cf
+
+# Proportion of samples from the data set to allocate to model evaluation 
+# (no training will be performed on those samples)
+test_size: 0.3
+
+#====================================================================================================================
+# PARAMETER OPTIMIZATION
+# Wether or not to carry out parameter optimization during training
+# If set to True, parameters 'param_opt', 'no_components', 'item_alpha', 'random_state', 'epochs' will be ignored. 
+param_opt: False #True
+#====================================================================================================================
+
+
+#====================================================================================================================
+# PARAMETER OPTIMIZATION
+# Ignored if param_opt is set to False
+# Otherwise, supply the values you want to try out during parameter optimization
+param_grid:
+  no_components: 
+  # dimensionality of the latent embeddings for users and items
+    - 10
+    - 50
+    - 100
+  loss: 
+  # loss function optimized during training. One of (‘logistic’, ‘bpr’, ‘warp’, ‘warp-kos’)
+  - 'warp'
+  - 'bpr'
+  item_alpha: 
+  # L2 penalty on item features. Setting this number too high will slow down training
+    - 1.e-6 
+    - 1.e-5
+    - 1.e-3 #1e-2
+  learning_schedule:
+  # optimization strategy used for gradient descent. One of (‘adagrad’, ‘adadelta’)
+  - 'adagrad'
+  - 'adadelta'
+  random_state: 
+  # random seed set to get reproducible results. Several training should be performed with different
+  # random states to see if this yields better results (any integer can be chosen) 
+    - 18
+  epochs: 
+  # number of passes over the full training set. If the size of the data set gets significantly larger, 
+  # model performance will benefit from training for more epochs.
+    - 5
+    - 10
+    - 20
+  #====================================================================================================================
+
+model_config:
+
+  #====================================================================================================================
+  # OPTIONAL : MODEL FILE NAME
+  # Supply model file name to save the model to (as .pkl). Default is {todays_date}_model.pkl
+
+  # UNCOMMENT AND SUPPLY THE FOLLOWING IF NEEDED
+  # model_file_name: LightFM_CF.pkl
+  #====================================================================================================================
+
+  #====================================================================================================================
+  # MODEL PARAMETERS FOR TRAINING
+  # The following will be ignored if param_opt is set to True
+
+  # dimensionality of the latent embeddings for users and items
+  no_components: 100 
+
+  # loss function optimized during training. One of (‘logistic’, ‘bpr’, ‘warp’, ‘warp-kos’)
+  loss: 'warp'
+
+  # L2 penalty on item features. Setting this number too high will slow down training
+  item_alpha: 1.e-6
+
+  # optimization strategy used for gradient descent. One of (‘adagrad’, ‘adadelta’)
+  learning_schedule: 'adadelta'
+
+  # random seed set to get reproducible results. Several training should be performed with different
+  # random states to see if this yields better results (any integer can be chosen) 
+  random_state: 18
+
+  # number of passes over the full training set. If the size of the data set gets significantly larger, 
+  # model performance will benefit from training for more epochs
+  epochs: 20
+  #====================================================================================================================

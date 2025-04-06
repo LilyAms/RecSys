@@ -1,0 +1,11 @@
+{
+    "Experiment": "test_experiment",
+    "date": "2023-01-17",
+    "Data set": "22_12_07_db",
+    "Model type": "hybrid",
+    "Test size": "0.3",
+    "Parameter optimization": false,
+    "Train AUC": "0.9783835",
+    "Test AUC": "0.78583133",
+    "Parameters": "{'no_components': 100, 'loss': 'warp', 'item_alpha': 1e-06, 'learning_schedule': 'adadelta', 'random_state': 18, 'epochs': 20, 'model_file_name': None}"
+}
