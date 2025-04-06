@@ -1,9 +1,5 @@
 # Recommendation system #
 
-Recommendation system model trial on the data base.
-
-## What is this repository for? ###
-
 * This repository contains the code for a recommendation system aimed at recommending venues (hotels, restaurants, shops...) to users. 
 * The model was trained on a (private) data base of around 1000 users (called "Members") and 300 venues (called "Partners"). The data set contained information about each partner (tags that characterize the partner - "hotel", "5-star", "swimming pool"), and interaction history between the members and the partners. 
 * The model is based on collaborative filtering and content, and makes use of the LightFM package. 
